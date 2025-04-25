@@ -1,11 +1,15 @@
 import React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
+        confirmPassword: '',
     });
 
     const [errors, setErrors] = useState({});
@@ -28,6 +32,11 @@ const Register = () => {
         } else if (formData.password.length < 6) {
             newErrors.password = 'Hasło musi mieć co najmniej 6 znaków.';
         }
+        if (!formData.confirmPassword) {
+            newErrors.confirmPassword = 'Potwierdzenie hasła jest wymagane.';
+        } else if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = 'Hasła muszą być takie same.';
+        }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -36,6 +45,10 @@ const Register = () => {
         e.preventDefault();
         if (validate()) {
             console.log('Form submitted:', formData);
+            navigate('/login'); // Redirect to login page after successful registration
+            // Here you can also send the formData to your backend for registration
+        } else {
+            console.log('Form has errors:', errors);
         }
     };
 
@@ -76,6 +89,18 @@ const Register = () => {
                     />
                     {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                 </div>
+                <div>
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Potwierdź hasło"
+                        className="border p-2 rounded w-full"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                    />
+                    {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+                </div>
+                <p>Masz już konto? <Link to={"/login"} className='font-bold hover:text-blue-500'>Zaloguj się!</Link></p>
                 <button className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Zarejestruj się</button>
             </form>
         </div>

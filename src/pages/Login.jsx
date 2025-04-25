@@ -1,10 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -13,6 +16,7 @@ const Login = () => {
         } else {
             setError('');
             console.log('Email:', email, 'Password:', password);
+            navigate('/dashboard');
         }
     };
 
@@ -35,6 +39,7 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 {error && <p className="text-red-500">{error}</p>}
+                <p>Nie masz konta? <Link to={"/register"} className='font-bold hover:text-blue-500'>Zarejestruj się!</Link></p>
                 <button
                     type="submit"
                     className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
