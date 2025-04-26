@@ -8,7 +8,11 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
+      <div className="App" style={{ backgroundColor: '#f0f0f0', minHeight: '100vh' }}>
+        <div className="bg-blue-500 text-white p-4 text-center mb-10 ">
+          <h1 className="text-3xl font-bold">Zarządzanie zadaniami</h1>
+          <p className="text-lg">Aplikacja do zarządzania zadaniami</p>
+        </div>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

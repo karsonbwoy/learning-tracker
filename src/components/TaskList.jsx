@@ -21,25 +21,25 @@ const TaskList = ({ tasks, setTasks }) => {
         setTasks(updatedTasks);
     };
 
-    if (!tasks || tasks.length === 0) {
-        return <p>Brak zadań do wyświetlenia.</p>;
-    }
 
     return (
-        <div className="max-w-2xl mx-auto bg-white shadow-md rounded-md p-6 flex flex-col gap-4">
-            <h2 className="text-2xl font-bold mb-4">Lista zadań</h2>
-            <ul className="space-y-4">
-                {tasks.map((task, index) => (
-                    <TaskItem
-                        task={task}
-                        key={index}
-                        index={index}
-                        changeStatus={changeStatus}
-                        removeTask={removeTask}
-                        updateNotes={updateNotes}
-                    />
-                ))}
-            </ul>
+        <div className="max-w-2xl mt-4 mx-auto bg-white shadow-md rounded-md p-6 flex flex-col gap-4">
+            {!tasks || tasks.length === 0 ? (
+                <h2 className="text-2xl font-bold mt-4 mb-4">Brak zadań do wyświetlenia.</h2>
+            ) : (<><h2 className="text-2xl font-bold mb-4">Lista zadań</h2>
+                <ul className="space-y-4">
+                    {tasks.map((task, index) => (
+                        <TaskItem
+                            task={task}
+                            key={index}
+                            index={index}
+                            changeStatus={changeStatus}
+                            removeTask={removeTask}
+                            updateNotes={updateNotes}
+                        />
+                    ))}
+                </ul></>)}
+
         </div>
     );
 };
