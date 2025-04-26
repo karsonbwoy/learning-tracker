@@ -19,8 +19,21 @@ const TaskItem = ({
         setIsEditing(false);
     }
 
+    const getStatusBgColor = (status) => {
+        switch (status) {
+            case 'Do zrobienia':
+                return 'bg-gray-200';
+            case 'W trakcie':
+                return 'bg-yellow-200';
+            case 'Ukończone':
+                return 'bg-green-200';
+            default:
+                return 'bg-white';
+        }
+    };
+
     return (
-        <li className="border p-4 rounded-md shadow-sm">
+        <li className={`border p-4 rounded-md shadow-sm ${getStatusBgColor(task.status)}`}>
             <h3 className="text-lg font-semibold">{task.title}</h3>
             <p><strong>Kategoria:</strong> {task.category}</p>
             <p><strong>Status:</strong> {task.status}</p>
