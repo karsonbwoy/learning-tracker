@@ -15,7 +15,6 @@ const Login = () => {
             setError('Email i hasło są wymagane.');
         } else {
             setError('');
-            console.log('Email:', email, 'Password:', password);
             navigate('/dashboard');
         }
     };
