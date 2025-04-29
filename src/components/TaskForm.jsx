@@ -6,6 +6,8 @@ export default function TaskForm({ addTask }) {
     const [status, setStatus] = useState("")
     const [notes, setNotes] = useState("")
     const [errors, setErrors] = useState({});
+    const [successAdd, setSuccessAdd] = useState(false)
+
 
     const validateForm = () => {
         const newErrors = {};
@@ -20,6 +22,8 @@ export default function TaskForm({ addTask }) {
         e.preventDefault()
         if (!validateForm()) return;
         addTask({ title, category, status, notes })
+        setSuccessAdd(true)
+        setTimeout(() => { setSuccessAdd(false) }, 2000)
         setTitle("")
         setCategory("")
         setStatus("")
@@ -87,7 +91,7 @@ export default function TaskForm({ addTask }) {
                     rows="3"
                 ></textarea>
             </div>
-
+            {successAdd && <p className="text-green-600 text- text-sm mt-1">Zadanie dodane 🎉</p>}
             <button
                 type="submit"
                 className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-all duration-200"

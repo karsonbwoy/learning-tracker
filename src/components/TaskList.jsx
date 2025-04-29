@@ -1,7 +1,11 @@
 
+import { useState } from 'react';
 import TaskItem from './TaskItem';
 
 const TaskList = ({ tasks, setTasks }) => {
+
+    const [successRemoved, setSuccessRemoved] = useState(false);
+
 
     const updateNotes = (index, newNote) => {
         const updatedTasks = [...tasks];
@@ -9,6 +13,8 @@ const TaskList = ({ tasks, setTasks }) => {
         setTasks(updatedTasks);
     }
     const removeTask = (index) => {
+        setSuccessRemoved(true);
+        setTimeout(() => { setSuccessRemoved(false) }, 2000)
         const updatedTasks = tasks.filter((_, i) => i !== index);
         setTasks(updatedTasks);
     };
@@ -27,6 +33,7 @@ const TaskList = ({ tasks, setTasks }) => {
 
     return (
         <div className="relative max-w-2xl mt-4 mx-auto bg-white shadow-md rounded-md p-6 flex flex-col gap-4">
+            {successRemoved && <p className="text-red-500">Zadanie zostało usunięte.</p>}
             {!tasks || tasks.length === 0 ? (
                 <h2 className="text-2xl font-bold mt-4 mb-4">Brak zadań do wyświetlenia.</h2>
             ) : (<><h2 className="text-2xl font-bold mb-2">Lista zadań</h2>
