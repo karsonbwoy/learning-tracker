@@ -1,15 +1,15 @@
-import React from 'react';
+
 import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
 import { useNavigate } from 'react-router-dom';
+import useTasks from '../hooks/useTasks';
+import SuccessfullyAddedAlert from '../components/SuccessfulyAddedAlert';
+import SuccessfullyRemovedAlert from '../components/SuccessfulyRemovedAlert';
 
 const Dashboard = () => {
-    const [tasks, setTasks] = React.useState([]);
-    const navigate = useNavigate();
+    const { tasks, successRemoved, successAdded, handleAddTask, updateNotes, removeTask, changeStatus, clearTasks } = useTasks();
 
-    const handleAddTask = (task) => {
-        setTasks([...tasks, task]);
-    };
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         // Implement logout functionality here
@@ -24,8 +24,10 @@ const Dashboard = () => {
                     Logout
                 </buttion>
             </div>
+            {successAdded && <SuccessfullyAddedAlert />}
             <TaskForm addTask={handleAddTask} />
-            <TaskList tasks={tasks} setTasks={setTasks} />
+            {successRemoved && <SuccessfullyRemovedAlert />}
+            <TaskList tasks={tasks} updateNotes={updateNotes} removeTask={removeTask} clearTasks={clearTasks} changeStatus={changeStatus} />
         </div>
     );
 };
