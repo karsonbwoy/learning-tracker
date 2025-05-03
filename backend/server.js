@@ -10,6 +10,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/tasks', taskRoutes);
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Połączono MongoDB');
     app.listen(process.env.PORT, () => {
@@ -18,5 +19,3 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 }).catch((err) => {
     console.error('Błąd połączenia z MongoDB:', err);
 });
-
-app.use('/api/tasks', taskRoutes);
