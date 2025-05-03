@@ -24,9 +24,9 @@ const Dashboard = () => {
                     Logout
                 </buttion>
             </div>
-            {successAdded && <SuccessfullyAddedAlert />}
+            {successAdded && <SuccessfullyAddedAlert name={successAdded} />}
             <TaskForm addTask={handleAddTask} />
-            {successRemoved && <SuccessfullyRemovedAlert />}
+            {successRemoved && <SuccessfullyRemovedAlert name={successRemoved} />}
             <TaskList tasks={tasks} updateNotes={updateNotes} removeTask={removeTask} clearTasks={clearTasks} changeStatus={changeStatus} />
         </div>
     );

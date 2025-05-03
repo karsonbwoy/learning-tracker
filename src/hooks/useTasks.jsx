@@ -4,10 +4,10 @@ export default function useTasks() {
 
     const [tasks, setTasks] = useState([]);
     const [successRemoved, setSuccessRemoved] = useState(false);
-    const [successAdded, setSuccessAdded] = useState(false);
+    const [successAdded, setSuccessAdded] = useState('');
     const handleAddTask = (task) => {
-        setSuccessAdded(true);
-        setTimeout(() => { setSuccessAdded(false) }, 2000)
+        setSuccessAdded(task.title);
+        setTimeout(() => { setSuccessAdded('') }, 2000)
         setTasks([...tasks, task]);
     };
 
@@ -18,8 +18,8 @@ export default function useTasks() {
     }
 
     const removeTask = (index) => {
-        setSuccessRemoved(true);
-        setTimeout(() => { setSuccessRemoved(false) }, 2000)
+        setSuccessRemoved(tasks[index].title);
+        setTimeout(() => { setSuccessRemoved('') }, 2000)
         const updatedTasks = tasks.filter((_, i) => i !== index);
         setTasks(updatedTasks);
     };
