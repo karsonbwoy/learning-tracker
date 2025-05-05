@@ -57,8 +57,7 @@ export default function useTasks() {
     };
 
     const clearTasks = async () => {
-        // await fetch('htttp://localhost:5000/tasks', { method: '' })
-        console.log('to be implemented: clear tasks')
+        await fetch('http://localhost:5000/tasks', { method: 'DELETE' })
         fetchTasks();
     }
 

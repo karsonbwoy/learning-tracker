@@ -20,3 +20,8 @@ export const updateTask = async (req, res) => {
     const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
     res.json(task)
 }
+
+export const deleteAllTasks = async (req, res) => {
+    await Task.deleteMany({})
+    res.status(200).json({ message: 'All tasks deleted succesfully' })
+}
