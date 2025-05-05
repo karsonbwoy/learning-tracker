@@ -76,7 +76,7 @@ const TaskItem = ({
                 </div>
             </div>
             <button
-                onClick={() => changeStatus(index)}
+                onClick={() => changeStatus(index, task.status)}
                 className="absolute bottom-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600  transition-all duration-200"
             >
                 Zmień status

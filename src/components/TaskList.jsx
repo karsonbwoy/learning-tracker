@@ -15,11 +15,11 @@ const TaskList = ({ tasks, updateNotes, removeTask, clearTasks, changeStatus }) 
                     Wyczyść wszystkie zadania
                 </button>
                 <ul className="space-y-4">
-                    {tasks.map((task, index) => (
+                    {tasks.map((task) => (
                         <TaskItem
                             task={task}
-                            key={index}
-                            index={index}
+                            key={task._id}
+                            index={task._id}
                             changeStatus={changeStatus}
                             removeTask={removeTask}
                             updateNotes={updateNotes}
