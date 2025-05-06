@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import taskRoutes from './routes/taskRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/tasks', taskRoutes);
+app.use('/auth', userRoutes)
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Połączono MongoDB');
     app.listen(process.env.PORT, () => {
