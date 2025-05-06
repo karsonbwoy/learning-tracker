@@ -6,17 +6,24 @@ import useTasks from '../hooks/useTasks';
 import SuccessfullyAddedAlert from '../components/SuccessfulyAddedAlert';
 import SuccessfullyRemovedAlert from '../components/SuccessfulyRemovedAlert';
 import LoadingComponent from '../components/LoadingComponent';
-
+import { useAuth } from '../AuthContext';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
     const { tasks, successRemoved, successAdded, handleAddTask, updateNotes, removeTask, changeStatus, clearTasks, isLoading } = useTasks();
+    const { logout, user } = useAuth();
 
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        // Implement logout functionality here
-        navigate('/login');
+    const handleLogout = async () => {
+        logout();
     }
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');
+        }
+    }, [user, navigate]);
 
     return (
         <div>
@@ -25,6 +32,9 @@ const Dashboard = () => {
                 <button className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onClick={handleLogout}>
                     Logout
                 </button>
+            </div>
+            <div className="text-center mb-4">
+                <h2 className="text-2xl font-bold">Witaj {user?.name}!</h2>
             </div>
             {successAdded && <SuccessfullyAddedAlert name={successAdded} />}
             <TaskForm addTask={handleAddTask} />

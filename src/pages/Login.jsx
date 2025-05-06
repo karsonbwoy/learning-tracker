@@ -1,14 +1,16 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../AuthContext';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { user, login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,10 +19,10 @@ const Login = () => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:5000/auth/login', { email, password });
+            const response = await axios.post('http://localhost:5000/auth/login', { email, password }, { withCredentials: true });
             console.log(response.data.message);
             setError('');
-            navigate('/dashboard');
+            login();
         }
         catch (err) {
             if (err.response && err.response.status === 401) {
@@ -31,6 +33,11 @@ const Login = () => {
         }
     };
 
+    useEffect(() => {
+        if (user) {
+            navigate('/dashboard');
+        }
+    }, [user, navigate]);
     return (
         <div className="max-w-md mx-auto mt-20 p-4 bg-white shadow rounded">
             <h1 className="text-2xl font-bold mb-4">Logowanie</h1>
@@ -39,11 +46,13 @@ const Login = () => {
                     type="email"
                     placeholder="Email"
                     className="border p-2 rounded"
+                    autoComplete='email'
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                     type="password"
+                    autoComplete='current-password'
                     placeholder="Hasło"
                     className="border p-2 rounded"
                     value={password}
