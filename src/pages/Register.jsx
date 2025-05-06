@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -41,14 +42,20 @@ const Register = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+
         e.preventDefault();
-        if (validate()) {
-            console.log('Form submitted:', formData);
-            navigate('/login'); // Redirect to login page after successful registration
-            // Here you can also send the formData to your backend for registration
-        } else {
+        if (!validate()) {
             console.log('Form has errors:', errors);
+            return
+        }
+
+        try {
+            const response = await axios.post('http://localhost:5000/auth/register', formData);
+            console.log(response.data); // Log the response data for debugging
+            navigate('/login'); // Redirect to login page after successful registration
+        } catch (error) {
+            console.error('Error during registration:', error.response.data); // Log the error response for debugging
         }
     };
 
