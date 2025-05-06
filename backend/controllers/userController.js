@@ -33,7 +33,28 @@ export const login = async (req, res) => {
             return res.status(401).json({ message: 'Niepoprawny adres email lub hasło' });
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        return res.status(200).json({ message: 'Zalogowano pomyślnie', token });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: 60 * 60 * 1000 // 1 hour
+        });
+        return res.status(200).json({ message: 'Zalogowano pomyślnie' });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Błąd serwera' });
+    }
+}
+
+export const logout = async (req, res) => {
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            sameSite: 'Strict',
+            secure: process.env.NODE_ENV === 'production'
+        });
+        return res.status(200).json({ message: 'Wylogowano pomyślnie' });
     }
     catch (error) {
         console.log(error);
