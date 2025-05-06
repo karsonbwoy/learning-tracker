@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -9,13 +10,24 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email || !password) {
             setError('Email i hasło są wymagane.');
-        } else {
+            return;
+        }
+        try {
+            const response = await axios.post('http://localhost:5000/auth/login', { email, password });
+            console.log(response.data.message);
             setError('');
             navigate('/dashboard');
+        }
+        catch (err) {
+            if (err.response && err.response.status === 401) {
+                setError('Niepoprawny email lub hasło.');
+            } else {
+                setError('Wystąpił błąd. Spróbuj ponownie później.');
+            }
         }
     };
 
