@@ -20,11 +20,7 @@ const userSchema = new mongoose.Schema({
         required: [true, "Hasło jest wymagane"],
         minlength: [6, "Hasło musi mieć co najmniej 6 znaków"]
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+}, { timestamps: true });
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();

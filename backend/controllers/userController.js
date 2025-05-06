@@ -5,15 +5,17 @@ export const register = async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
-        const existingUser = await User.find({ email });
-        if (existingUser.length > 0) {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
             return res.status(400).json({ message: 'Użytkownik o tym adresie email już istnieje' });
         }
         const newUser = new User({ name, email, password });
         await newUser.save();
         return res.status(201).json({ message: 'Użytkownik zarejestrowany pomyślnie' });
     }
-    catch {
+    catch (error) {
+        console.log(error);
+
         return res.status(500).json({ message: 'Błąd serwera' });
     }
 }
@@ -33,7 +35,8 @@ export const login = async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return res.status(200).json({ message: 'Zalogowano pomyślnie', token });
     }
-    catch {
+    catch (error) {
+        console.log(error);
         return res.status(500).json({ message: 'Błąd serwera' });
     }
 }
