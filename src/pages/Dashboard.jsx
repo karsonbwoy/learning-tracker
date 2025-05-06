@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import useTasks from '../hooks/useTasks';
 import SuccessfullyAddedAlert from '../components/SuccessfulyAddedAlert';
 import SuccessfullyRemovedAlert from '../components/SuccessfulyRemovedAlert';
+import LoadingComponent from '../components/LoadingComponent';
+
 
 const Dashboard = () => {
-    const { tasks, successRemoved, successAdded, handleAddTask, updateNotes, removeTask, changeStatus, clearTasks } = useTasks();
+    const { tasks, successRemoved, successAdded, handleAddTask, updateNotes, removeTask, changeStatus, clearTasks, isLoading } = useTasks();
 
     const navigate = useNavigate();
 
@@ -27,7 +29,10 @@ const Dashboard = () => {
             {successAdded && <SuccessfullyAddedAlert name={successAdded} />}
             <TaskForm addTask={handleAddTask} />
             {successRemoved && <SuccessfullyRemovedAlert name={successRemoved} />}
-            <TaskList tasks={tasks} updateNotes={updateNotes} removeTask={removeTask} clearTasks={clearTasks} changeStatus={changeStatus} />
+            {isLoading ?
+                <LoadingComponent />
+                :
+                <TaskList tasks={tasks} updateNotes={updateNotes} removeTask={removeTask} clearTasks={clearTasks} changeStatus={changeStatus} />}
         </div>
     );
 };

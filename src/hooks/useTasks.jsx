@@ -1,64 +1,97 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 export default function useTasks() {
 
     const [tasks, setTasks] = useState([]);
     const [successRemoved, setSuccessRemoved] = useState(false);
     const [successAdded, setSuccessAdded] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const debounceTimeout = useRef(null);
 
-    const fetchTasks = async () => {
-        const fetchedTasks = await fetch('http://localhost:5000/tasks', { method: 'GET', }).then(res => res.json()).then(data => data).catch(() => console.log("nie udało się pobrać danych z bazy ziomeczku"));
-        fetchedTasks && setTasks(fetchedTasks);
+    const fetchTasks = () => {
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
+        }
+
+        debounceTimeout.current = setTimeout(async () => {
+            setIsLoading(true);
+            try {
+                const response = await axios.get('http://localhost:5000/tasks');
+                setTasks(response.data);
+            } catch (error) {
+                console.error('Błąd podczas pobierania zadań:', error);
+            }
+            finally {
+                setIsLoading(false);
+            }
+        }, 300)
     };
 
 
     const handleAddTask = async (task) => {
-        await fetch('http://localhost:5000/tasks', {
-            method: 'POST', headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(task)
-        }).then(() => {
-            setSuccessAdded(task.title);
+        try {
+            const res = await axios.post('http://localhost:5000/tasks', task);
+            setSuccessAdded(res.data.title);
             setTimeout(() => { setSuccessAdded('') }, 2000)
-        }).catch(() => console.log("nie udało się ziomeczku"))
-        fetchTasks();
+            fetchTasks();
+        }
+
+        catch (error) {
+            console.error('Błąd podczas dodawania zadania:', error);
+        }
     };
 
-    const updateNotes = async (index, newNote) => {
-        await fetch(`http://localhost:5000/tasks/${index}`, {
-            method: 'PUT', headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ notes: newNote })
-        }).catch(() => console.log("nie udało się zapisać notatki ziomeczku"))
-        fetchTasks();
+    const updateNotes = async (taskId, newNote) => {
+        try {
+            await axios.put(`http://localhost:5000/tasks/${taskId}`, { notes: newNote });
+        }
+        catch (error) {
+            console.error('Błąd podczas aktualizacji notatek:', error);
+        }
+        finally {
+            fetchTasks();
+        }
     }
 
-    const removeTask = async (index, title) => {
-        await fetch(`http://localhost:5000/tasks/${index}`, { method: 'DELETE' }).then(() => {
+    const removeTask = async (taskId, title) => {
+        try {
+            await axios.delete(`http://localhost:5000/tasks/${taskId}`);
             setSuccessRemoved(title);
             setTimeout(() => { setSuccessRemoved('') }, 2000)
-        }).catch(() => console.log("nie udało się usunąć zadania ziomeczku"));
-        fetchTasks();
+        } catch (error) {
+            console.error('Błąd podczas usuwania zadania:', error);
+        }
+        finally {
+            fetchTasks();
+        }
     };
-    const changeStatus = async (index, status) => {
+
+    const changeStatus = async (taskId, status) => {
         const statuses = ['Do zrobienia', 'W trakcie', 'Ukończone'];
         const currentIndex = statuses.indexOf(status);
         const newStatus = statuses[(currentIndex + 1) % statuses.length];
 
-        await fetch(`http://localhost:5000/tasks/${index}`, {
-            method: 'PUT', headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ status: newStatus })
-        }).catch(() => console.log("nie udało się zmienić statusu zadania ziomeczku"));
-        fetchTasks();
+        try {
+            await axios.put(`http://localhost:5000/tasks/${taskId}`, { status: newStatus });
+        } catch (error) {
+            console.error('Błąd podczas zmiany statusu zadania:', error);
+        }
+
+        finally {
+            fetchTasks();
+        }
     };
 
     const clearTasks = async () => {
-        await fetch('http://localhost:5000/tasks', { method: 'DELETE' })
-        fetchTasks();
+        try {
+            await axios.delete('http://localhost:5000/tasks');
+        } catch (error) {
+            console.error('Błąd podczas usuwania wszystkich zadań:', error);
+        }
+        finally {
+            fetchTasks();
+        }
     }
 
     useEffect(() => {
@@ -74,5 +107,6 @@ export default function useTasks() {
         removeTask,
         changeStatus,
         clearTasks,
+        isLoading,
     }
 }
