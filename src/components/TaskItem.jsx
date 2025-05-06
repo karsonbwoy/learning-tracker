@@ -35,7 +35,7 @@ const TaskItem = ({
     return (
         <li className={`relative border p-4 rounded-md shadow-sm ${getStatusBgColor(task.status)}`}>
             <button
-                onClick={() => removeTask(index)}
+                onClick={() => removeTask(index, task.title)}
                 className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-all duration-200"
             >
                 Usuń

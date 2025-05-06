@@ -20,9 +20,9 @@ const Dashboard = () => {
         <div>
             <div className="relative bg-blue-300 text-white p-4 text-center mb-10 ">
                 <h2 className="text-3xl font-bold">Dashboard</h2>
-                <buttion className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onClick={handleLogout}>
+                <button className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onClick={handleLogout}>
                     Logout
-                </buttion>
+                </button>
             </div>
             {successAdded && <SuccessfullyAddedAlert name={successAdded} />}
             <TaskForm addTask={handleAddTask} />

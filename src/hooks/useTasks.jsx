@@ -7,9 +7,8 @@ export default function useTasks() {
     const [successAdded, setSuccessAdded] = useState('');
 
     const fetchTasks = async () => {
-        const fetchedTasks = await fetch('http://localhost:5000/tasks', { method: 'GET', }).then(res => res.json()).then(data => data)
-        console.log(fetchedTasks)
-        setTasks(fetchedTasks);
+        const fetchedTasks = await fetch('http://localhost:5000/tasks', { method: 'GET', }).then(res => res.json()).then(data => data).catch(() => console.log("nie udało się pobrać danych z bazy ziomeczku"));
+        fetchedTasks && setTasks(fetchedTasks);
     };
 
 
@@ -19,9 +18,10 @@ export default function useTasks() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(task)
-        })
-        setSuccessAdded(task.title);
-        setTimeout(() => { setSuccessAdded('') }, 2000)
+        }).then(() => {
+            setSuccessAdded(task.title);
+            setTimeout(() => { setSuccessAdded('') }, 2000)
+        }).catch(() => console.log("nie udało się ziomeczku"))
         fetchTasks();
     };
 
@@ -31,28 +31,28 @@ export default function useTasks() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ notes: newNote })
-        })
+        }).catch(() => console.log("nie udało się zapisać notatki ziomeczku"))
         fetchTasks();
     }
 
-    const removeTask = async (index) => {
-        await fetch(`http://localhost:5000/tasks/${index}`, { method: 'DELETE' })
-        setSuccessRemoved(index);
-        setTimeout(() => { setSuccessRemoved('') }, 2000)
+    const removeTask = async (index, title) => {
+        await fetch(`http://localhost:5000/tasks/${index}`, { method: 'DELETE' }).then(() => {
+            setSuccessRemoved(title);
+            setTimeout(() => { setSuccessRemoved('') }, 2000)
+        }).catch(() => console.log("nie udało się usunąć zadania ziomeczku"));
         fetchTasks();
     };
     const changeStatus = async (index, status) => {
         const statuses = ['Do zrobienia', 'W trakcie', 'Ukończone'];
-        console.log(tasks);
-
         const currentIndex = statuses.indexOf(status);
         const newStatus = statuses[(currentIndex + 1) % statuses.length];
+
         await fetch(`http://localhost:5000/tasks/${index}`, {
             method: 'PUT', headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ status: newStatus })
-        })
+        }).catch(() => console.log("nie udało się zmienić statusu zadania ziomeczku"));
         fetchTasks();
     };
 
