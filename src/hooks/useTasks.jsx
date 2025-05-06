@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
+const STATUSES = ['Do zrobienia', 'W trakcie', 'Ukończone'];
+
 export default function useTasks() {
 
     const [tasks, setTasks] = useState([]);
@@ -33,7 +35,9 @@ export default function useTasks() {
         try {
             const res = await axios.post('http://localhost:5000/tasks', task);
             setSuccessAdded(res.data.title);
-            setTimeout(() => { setSuccessAdded('') }, 2000)
+            setTimeout(() => {
+                setSuccessAdded('')
+            }, 2000)
             fetchTasks();
         }
 
@@ -58,7 +62,9 @@ export default function useTasks() {
         try {
             await axios.delete(`http://localhost:5000/tasks/${taskId}`);
             setSuccessRemoved(title);
-            setTimeout(() => { setSuccessRemoved('') }, 2000)
+            setTimeout(() => {
+                setSuccessRemoved('')
+            }, 2000)
         } catch (error) {
             console.error('Błąd podczas usuwania zadania:', error);
         }
@@ -68,9 +74,8 @@ export default function useTasks() {
     };
 
     const changeStatus = async (taskId, status) => {
-        const statuses = ['Do zrobienia', 'W trakcie', 'Ukończone'];
-        const currentIndex = statuses.indexOf(status);
-        const newStatus = statuses[(currentIndex + 1) % statuses.length];
+        const currentIndex = STATUSES.indexOf(status);
+        const newStatus = STATUSES[(currentIndex + 1) % STATUSES.length];
 
         try {
             await axios.put(`http://localhost:5000/tasks/${taskId}`, { status: newStatus });
@@ -96,6 +101,7 @@ export default function useTasks() {
 
     useEffect(() => {
         fetchTasks();
+        return () => clearTimeout(debounceTimeout.current);
     }, []);
 
     return {
