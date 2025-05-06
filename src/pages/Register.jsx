@@ -52,7 +52,7 @@ const Register = () => {
 
         try {
             const response = await axios.post('http://localhost:5000/auth/register', formData);
-            console.log(response.data); // Log the response data for debugging
+            console.log(response.data.message); // Log the response data for debugging
             navigate('/login'); // Redirect to login page after successful registration
         } catch (error) {
             console.error('Error during registration:', error.response.data); // Log the error response for debugging
@@ -70,6 +70,7 @@ const Register = () => {
                         placeholder="Imię"
                         className="border p-2 rounded w-full"
                         value={formData.name}
+                        autoComplete='off'
                         onChange={handleChange}
                     />
                     {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
@@ -80,6 +81,7 @@ const Register = () => {
                         name="email"
                         placeholder="Email"
                         className="border p-2 rounded w-full"
+                        autoComplete='email'
                         value={formData.email}
                         onChange={handleChange}
                     />
@@ -90,6 +92,7 @@ const Register = () => {
                         type="password"
                         name="password"
                         placeholder="Hasło"
+                        autoComplete='new-password'
                         className="border p-2 rounded w-full"
                         value={formData.password}
                         onChange={handleChange}
@@ -102,6 +105,7 @@ const Register = () => {
                         name="confirmPassword"
                         placeholder="Potwierdź hasło"
                         className="border p-2 rounded w-full"
+                        autoComplete='new-password'
                         value={formData.confirmPassword}
                         onChange={handleChange}
                     />

@@ -14,11 +14,16 @@ const taskSchema = new mongoose.Schema({
     status: {
         type: String,
         required: [true, "Status jest wymagany"],
-        enum: ["Do zrobienia", "W trakcie", "Zrobione"],
+        enum: ["Do zrobienia", "W trakcie", "Ukończone"],
     },
     notes: {
         type: String,
         default: "",
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "Użytkownik jest wymagany"],
     },
 }, { timestamps: true });
 

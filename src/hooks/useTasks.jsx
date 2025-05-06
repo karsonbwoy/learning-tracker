@@ -19,7 +19,7 @@ export default function useTasks() {
         debounceTimeout.current = setTimeout(async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get('http://localhost:5000/tasks');
+                const response = await axios.get('http://localhost:5000/tasks', { withCredentials: true });
                 setTasks(response.data);
             } catch (error) {
                 console.error('Błąd podczas pobierania zadań:', error);
@@ -33,7 +33,7 @@ export default function useTasks() {
 
     const handleAddTask = async (task) => {
         try {
-            const res = await axios.post('http://localhost:5000/tasks', task);
+            const res = await axios.post('http://localhost:5000/tasks', task, { withCredentials: true });
             setSuccessAdded(res.data.title);
             setTimeout(() => {
                 setSuccessAdded('')
@@ -48,7 +48,7 @@ export default function useTasks() {
 
     const updateNotes = async (taskId, newNote) => {
         try {
-            await axios.put(`http://localhost:5000/tasks/${taskId}`, { notes: newNote });
+            await axios.put(`http://localhost:5000/tasks/${taskId}`, { notes: newNote }, { withCredentials: true });
         }
         catch (error) {
             console.error('Błąd podczas aktualizacji notatek:', error);
@@ -60,7 +60,7 @@ export default function useTasks() {
 
     const removeTask = async (taskId, title) => {
         try {
-            await axios.delete(`http://localhost:5000/tasks/${taskId}`);
+            await axios.delete(`http://localhost:5000/tasks/${taskId}`, { withCredentials: true });
             setSuccessRemoved(title);
             setTimeout(() => {
                 setSuccessRemoved('')
@@ -78,7 +78,7 @@ export default function useTasks() {
         const newStatus = STATUSES[(currentIndex + 1) % STATUSES.length];
 
         try {
-            await axios.put(`http://localhost:5000/tasks/${taskId}`, { status: newStatus });
+            await axios.put(`http://localhost:5000/tasks/${taskId}`, { status: newStatus }, { withCredentials: true });
         } catch (error) {
             console.error('Błąd podczas zmiany statusu zadania:', error);
         }
@@ -90,7 +90,7 @@ export default function useTasks() {
 
     const clearTasks = async () => {
         try {
-            await axios.delete('http://localhost:5000/tasks');
+            await axios.delete('http://localhost:5000/tasks', { withCredentials: true });
         } catch (error) {
             console.error('Błąd podczas usuwania wszystkich zadań:', error);
         }
