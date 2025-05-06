@@ -61,3 +61,17 @@ export const logout = async (req, res) => {
         return res.status(500).json({ message: 'Błąd serwera' });
     }
 }
+
+export const getUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password'); // Exclude password from the response
+        if (!user) {
+            return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
+        }
+        return res.status(200).json(user);
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Błąd serwera' });
+    }
+}
