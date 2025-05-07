@@ -9,7 +9,7 @@ export default function useTasks() {
     const [tasks, setTasks] = useState([]);
     const [successRemoved, setSuccessRemoved] = useState(false);
     const [successAdded, setSuccessAdded] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const debounceTimeout = useRef(null);
     const { checkUser } = useAuth();
 
@@ -49,6 +49,7 @@ export default function useTasks() {
 
         catch (error) {
             console.error('Błąd podczas dodawania zadania:', error);
+            checkUser();
         }
     };
 
@@ -74,6 +75,7 @@ export default function useTasks() {
             }, 2000)
         } catch (error) {
             console.error('Błąd podczas usuwania zadania:', error);
+            checkUser();
         }
     };
 
