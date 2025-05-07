@@ -1,45 +1,104 @@
-# Learning Tracker
+# 📚 Learning Tracker
 
-Welcome to the **Learning Tracker** repository! This project is designed to help you organize and track your learning progress effectively.
+A simple web application to track your learning progress over time. Add, update, and remove tasks or resources, and stay organized as you grow your skills.
 
-## Features
+## 🚀 Features
 
-- Organize learning topics.
-- Track progress and milestones.
-- Add notes and resources.
+- Add learning tasks (topics, books, videos, courses)
+- Mark tasks as completed
+- Edit or delete tasks
+- Responsive and clean UI
+- Reguister and login users
+- Users have own tasks
+- Backend API for storing tasks and users
 
-## Getting Started
+## 🛠️ Tech Stack
 
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/learning-tracker.git
-    ```
-2. Navigate to the project directory:
-    ```bash
-    cd learning-tracker
-    ```
+### Frontend
+- React + Vite
+- Tailwind CSS
 
-## Contributing
+### Backend
+- Node.js
+- Express
+- MongoDB (via Mongoose)
 
-Contributions are welcome! Please follow these steps:
+## 📂 Project Structure
 
-1. Fork the repository.
-2. Create a new branch:
-    ```bash
-    git checkout -b feature-name
-    ```
-3. Commit your changes:
-    ```bash
-    git commit -m "Add feature-name"
-    ```
-4. Push to your branch:
-    ```bash
-    git push origin feature-name
-    ```
-5. Open a pull request.
+```
+learning-tracker/
+│
+├── backend/           # Express.js backend API
+├── public/            # Static files
+├── src/               # React frontend
+│   ├── components/
+│   ├── pages/
+│   └── utils/
+├── .env               # Environment variables
+├── .eslintrc.cjs      # ESLint configuration
+├── vite.config.js     # Vite configuration
+└── vercel.json        # Deployment settings
+```
 
-## License
+## 🧪 Running Locally
 
-This project is licensed under the [MIT License](LICENSE).
+### 1. Clone the repository
 
-Happy learning!
+```bash
+git clone https://github.com/karsonbwoy/learning-tracker.git
+cd learning-tracker
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+cd backend
+npm install
+```
+
+### 3. Set up `.env` files
+
+Create `.env` files for both frontend and backend.
+
+#### `backend/.env`:
+
+```
+MONGO_URI=your-mongodb-url
+PORT=5000
+JWT_SECRET=your-jwt-secret
+NODE_ENV=production
+CLIENT_URL=frontend-url
+```
+
+#### `frontend/.env` (optional):
+
+```
+VITE_API_URL=http://localhost:5000
+```
+
+### 4. Run the app
+
+In the root project:
+
+```bash
+npm run dev
+```
+
+In `/backend`:
+
+```bash
+npm run dev
+```
+
+## 🔍 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you'd like to change.
+
+## 📄 License
+
+[MIT](LICENSE)
+
+---
+
+Built with 💡 by [karsonbwoy](https://github.com/karsonbwoy)
