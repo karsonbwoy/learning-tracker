@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import { useAuth } from "../AuthContext";
 
@@ -13,7 +13,7 @@ export default function useTasks() {
     const debounceTimeout = useRef(null);
     const { checkUser } = useAuth();
 
-    const fetchTasks = (withLoading = false) => {
+    const fetchTasks = useCallback((withLoading = false) => {
         if (debounceTimeout.current) {
             clearTimeout(debounceTimeout.current);
         }
@@ -34,7 +34,7 @@ export default function useTasks() {
                 }
             }, 300)
         })
-    };
+    }, [checkUser]);
 
 
     const handleAddTask = async (task) => {
@@ -106,7 +106,7 @@ export default function useTasks() {
     useEffect(() => {
         fetchTasks(true);
         return () => clearTimeout(debounceTimeout.current);
-    }, []);
+    }, [fetchTasks]);
 
     return {
         tasks,
