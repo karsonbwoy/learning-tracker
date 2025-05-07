@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { useAuth } from "../AuthContext";
 
 const STATUSES = ['Do zrobienia', 'W trakcie', 'Ukończone'];
 
@@ -10,6 +11,7 @@ export default function useTasks() {
     const [successAdded, setSuccessAdded] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const debounceTimeout = useRef(null);
+    const { checkUser } = useAuth();
 
     const fetchTasks = (withLoading = false) => {
         if (debounceTimeout.current) {
@@ -24,6 +26,7 @@ export default function useTasks() {
                 setTasks(response.data);
             } catch (error) {
                 console.error('Błąd podczas pobierania zadań:', error);
+                checkUser();
             }
             finally {
                 withLoading && setIsLoading(false);
