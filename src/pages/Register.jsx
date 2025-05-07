@@ -3,9 +3,12 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useEffect } from 'react';
+import { useAuth } from '../AuthContext';
 
 const Register = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -58,6 +61,12 @@ const Register = () => {
             console.error('Error during registration:', error.response.data); // Log the error response for debugging
         }
     };
+
+    useEffect(() => {
+        if (user) {
+            navigate('/dashboard');
+        }
+    }, [user, navigate]);
 
     return (
         <div className="max-w-md mx-auto mt-20 p-4 bg-white shadow rounded">
