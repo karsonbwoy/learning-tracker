@@ -12,7 +12,7 @@ const CLIENT_URL = process.env.CLIENT_URL
 const app = express();
 
 app.use(cors({
-    origin: `${CLIENT_URL}`, // Replace with your frontend's URL
+    origin: CLIENT_URL, // Replace with your frontend's URL
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 }));
 app.use(express.json());
