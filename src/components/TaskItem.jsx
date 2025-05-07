@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 
 const TaskItem = ({
     task,
@@ -6,16 +6,40 @@ const TaskItem = ({
     removeTask,
     updateNotes,
 }) => {
-    const [note, setNote] = React.useState(task.notes || '');
-    const [isEditing, setIsEditing] = React.useState(false);
+    const [note, setNote] = useState(task.notes || '');
+    const [isEditing, setIsEditing] = useState(false);
+
+    const [isSavingNote, setIsSavingNote] = useState(false);
+    const [isChangingStatus, setIsChangingStatus] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const handleNoteChange = (value) => {
         setNote(value);
     }
 
-    const saveNotes = () => {
-        updateNotes(task._id, note);
-        setIsEditing(false);
+    const handleDeleteTask = async () => {
+        setIsDeleting(true);
+        await removeTask(task._id, task.title);
+        setTimeout(() => {
+            setIsDeleting(false);
+        }, 300)
+    }
+
+    const handleStatusChange = async () => {
+        setIsChangingStatus(true);
+        await changeStatus(task._id, task.status)
+        setTimeout(() => {
+            setIsChangingStatus(false);
+        }, 300)
+    }
+
+    const handleSaveNotes = async () => {
+        setIsSavingNote(true);
+        await updateNotes(task._id, note);
+        setTimeout(() => {
+            setIsSavingNote(false);
+            setIsEditing(false);
+        }, 300)
     }
 
     const getStatusBgColor = (status) => {
@@ -34,10 +58,11 @@ const TaskItem = ({
     return (
         <li className={`relative border p-4 rounded-md shadow-sm ${getStatusBgColor(task.status)}`}>
             <button
-                onClick={() => removeTask(task._id, task.title)}
-                className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-all duration-200"
+                onClick={handleDeleteTask}
+                className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-all duration-200 disabled:opacity-50"
+                disabled={isDeleting}
             >
-                Usuń
+                {isDeleting ? 'Usuwanie...' : 'Usuń zadanie'}
             </button>
             <div className="flex flex-col">
                 <h3 className="text-lg font-semibold">
@@ -55,10 +80,12 @@ const TaskItem = ({
                                 className="border rounded-md w-full mt-1 p-2 bg-white hover:bg-gray-100"
                             />
                             <button
-                                onClick={() => saveNotes()}
-                                className="bg-green-500 text-white px-2 py-1 rounded-md mt-2 hover:bg-green-600 transition-all duration-200"
+                                onClick={handleSaveNotes}
+                                className="bg-green-500 text-white px-2 py-1 rounded-md mt-2 hover:bg-green-600 transition-all duration-200
+                                disabled:opacity-50"
+                                disabled={isSavingNote}
                             >
-                                Zapisz
+                                {isSavingNote ? 'Zapisywanie...' : 'Zapisz notatki'}
                             </button>
                         </div>
                     ) : (
@@ -75,10 +102,11 @@ const TaskItem = ({
                 </div>
             </div>
             <button
-                onClick={() => changeStatus(task._id, task.status)}
-                className="absolute bottom-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600  transition-all duration-200"
+                onClick={handleStatusChange}
+                className="absolute bottom-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600  transition-all duration-200 disabled:opacity-50"
+                disabled={isChangingStatus}
             >
-                Zmień status
+                {isChangingStatus ? 'Zmiana statusu...' : 'Zmień status'}
             </button>
         </li>
     );
