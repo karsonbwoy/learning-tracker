@@ -17,32 +17,34 @@ export default function useTasks() {
         if (debounceTimeout.current) {
             clearTimeout(debounceTimeout.current);
         }
+        return new Promise((resolve) => {
+            debounceTimeout.current = setTimeout(async () => {
 
-        debounceTimeout.current = setTimeout(async () => {
-
-            withLoading && setIsLoading(true);
-            try {
-                const response = await axios.get('http://localhost:5000/tasks', { withCredentials: true });
-                setTasks(response.data);
-            } catch (error) {
-                console.error('Błąd podczas pobierania zadań:', error);
-                checkUser();
-            }
-            finally {
-                withLoading && setIsLoading(false);
-            }
-        }, 300)
+                withLoading && setIsLoading(true);
+                try {
+                    const response = await axios.get('http://localhost:5000/tasks', { withCredentials: true });
+                    setTasks(response.data);
+                } catch (error) {
+                    console.error('Błąd podczas pobierania zadań:', error);
+                    checkUser();
+                }
+                finally {
+                    withLoading && setIsLoading(false);
+                    resolve();
+                }
+            }, 300)
+        })
     };
 
 
     const handleAddTask = async (task) => {
         try {
             const res = await axios.post('http://localhost:5000/tasks', task, { withCredentials: true });
+            await fetchTasks();
             setSuccessAdded(res.data.title);
             setTimeout(() => {
                 setSuccessAdded('')
             }, 2000)
-            fetchTasks();
         }
 
         catch (error) {
@@ -65,15 +67,13 @@ export default function useTasks() {
     const removeTask = async (taskId, title) => {
         try {
             await axios.delete(`http://localhost:5000/tasks/${taskId}`, { withCredentials: true });
+            await fetchTasks();
             setSuccessRemoved(title);
             setTimeout(() => {
                 setSuccessRemoved('')
             }, 2000)
         } catch (error) {
             console.error('Błąd podczas usuwania zadania:', error);
-        }
-        finally {
-            fetchTasks();
         }
     };
 
