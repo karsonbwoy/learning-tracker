@@ -2,7 +2,6 @@ import React from 'react';
 
 const TaskItem = ({
     task,
-    index,
     changeStatus,
     removeTask,
     updateNotes,
@@ -15,7 +14,7 @@ const TaskItem = ({
     }
 
     const saveNotes = () => {
-        updateNotes(index, note);
+        updateNotes(task._id, note);
         setIsEditing(false);
     }
 
@@ -35,7 +34,7 @@ const TaskItem = ({
     return (
         <li className={`relative border p-4 rounded-md shadow-sm ${getStatusBgColor(task.status)}`}>
             <button
-                onClick={() => removeTask(index, task.title)}
+                onClick={() => removeTask(task._id, task.title)}
                 className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-all duration-200"
             >
                 Usuń
@@ -76,7 +75,7 @@ const TaskItem = ({
                 </div>
             </div>
             <button
-                onClick={() => changeStatus(index, task.status)}
+                onClick={() => changeStatus(task._id, task.status)}
                 className="absolute bottom-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600  transition-all duration-200"
             >
                 Zmień status

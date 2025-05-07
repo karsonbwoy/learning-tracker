@@ -19,7 +19,6 @@ const TaskList = ({ tasks, updateNotes, removeTask, clearTasks, changeStatus }) 
                         <TaskItem
                             task={task}
                             key={task._id}
-                            index={task._id}
                             changeStatus={changeStatus}
                             removeTask={removeTask}
                             updateNotes={updateNotes}

@@ -11,13 +11,14 @@ export default function useTasks() {
     const [isLoading, setIsLoading] = useState(false);
     const debounceTimeout = useRef(null);
 
-    const fetchTasks = () => {
+    const fetchTasks = (withLoading = false) => {
         if (debounceTimeout.current) {
             clearTimeout(debounceTimeout.current);
         }
 
         debounceTimeout.current = setTimeout(async () => {
-            setIsLoading(true);
+
+            withLoading && setIsLoading(true);
             try {
                 const response = await axios.get('http://localhost:5000/tasks', { withCredentials: true });
                 setTasks(response.data);
@@ -25,7 +26,7 @@ export default function useTasks() {
                 console.error('Błąd podczas pobierania zadań:', error);
             }
             finally {
-                setIsLoading(false);
+                withLoading && setIsLoading(false);
             }
         }, 300)
     };
@@ -100,7 +101,7 @@ export default function useTasks() {
     }
 
     useEffect(() => {
-        fetchTasks();
+        fetchTasks(true);
         return () => clearTimeout(debounceTimeout.current);
     }, []);
 
