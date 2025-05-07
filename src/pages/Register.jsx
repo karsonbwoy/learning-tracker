@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useAuth } from '../AuthContext';
 
+const API = import.meta.env.VITE_API_URL
+
 const Register = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
@@ -54,7 +56,7 @@ const Register = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/auth/register', formData);
+            const response = await axios.post(`${API}/auth/register`, formData);
             console.log(response.data.message); // Log the response data for debugging
             navigate('/login'); // Redirect to login page after successful registration
         } catch (error) {
