@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../AuthContext";
 
 const STATUSES = ['Do zrobienia', 'W trakcie', 'Ukończone'];
+const API = import.meta.env.VITE_API_URL
 
 export default function useTasks() {
 
@@ -22,7 +23,7 @@ export default function useTasks() {
 
                 withLoading && setIsLoading(true);
                 try {
-                    const response = await axios.get('http://localhost:5000/tasks', { withCredentials: true });
+                    const response = await axios.get(`${API}/tasks`, { withCredentials: true });
                     setTasks(response.data);
                 } catch (error) {
                     console.error('Błąd podczas pobierania zadań:', error);
@@ -39,7 +40,7 @@ export default function useTasks() {
 
     const handleAddTask = async (task) => {
         try {
-            const res = await axios.post('http://localhost:5000/tasks', task, { withCredentials: true });
+            const res = await axios.post(`${API}/tasks`, task, { withCredentials: true });
             await fetchTasks();
             setSuccessAdded(res.data.title);
             setTimeout(() => {
@@ -55,7 +56,7 @@ export default function useTasks() {
 
     const updateNotes = async (taskId, newNote) => {
         try {
-            await axios.put(`http://localhost:5000/tasks/${taskId}`, { notes: newNote }, { withCredentials: true });
+            await axios.put(`${API}/tasks/${taskId}`, { notes: newNote }, { withCredentials: true });
         }
         catch (error) {
             console.error('Błąd podczas aktualizacji notatek:', error);
@@ -67,7 +68,7 @@ export default function useTasks() {
 
     const removeTask = async (taskId, title) => {
         try {
-            await axios.delete(`http://localhost:5000/tasks/${taskId}`, { withCredentials: true });
+            await axios.delete(`${API}/tasks/${taskId}`, { withCredentials: true });
             await fetchTasks();
             setSuccessRemoved(title);
             setTimeout(() => {
@@ -84,7 +85,7 @@ export default function useTasks() {
         const newStatus = STATUSES[(currentIndex + 1) % STATUSES.length];
 
         try {
-            await axios.put(`http://localhost:5000/tasks/${taskId}`, { status: newStatus }, { withCredentials: true });
+            await axios.put(`${API}/tasks/${taskId}`, { status: newStatus }, { withCredentials: true });
         } catch (error) {
             console.error('Błąd podczas zmiany statusu zadania:', error);
         }
@@ -96,7 +97,7 @@ export default function useTasks() {
 
     const clearTasks = async () => {
         try {
-            await axios.delete('http://localhost:5000/tasks', { withCredentials: true });
+            await axios.delete(`${API}/tasks`, { withCredentials: true });
         } catch (error) {
             console.error('Błąd podczas usuwania wszystkich zadań:', error);
         }

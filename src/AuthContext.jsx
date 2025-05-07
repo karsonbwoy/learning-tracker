@@ -1,6 +1,7 @@
 import { useContext, createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -8,7 +9,7 @@ const AuthProvider = ({ children }) => {
 
     const checkUser = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/auth/me', { withCredentials: true });
+            const response = await axios.get(`${API}/auth/me`, { withCredentials: true });
             setUser(response.data);
         } catch (error) {
             if (error.response && error.response.status === 401) {
@@ -26,7 +27,7 @@ const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true })
+        axios.post(`${API}/auth/logout`, {}, { withCredentials: true })
             .then(() => {
                 setUser(null);
             })
