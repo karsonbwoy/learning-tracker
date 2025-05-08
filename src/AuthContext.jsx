@@ -22,8 +22,7 @@ const AuthProvider = ({ children }) => {
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 // Handle 401 Unauthorized without logging an error
-
-                setUserError('Użytkownik nie jest zalogowany.');
+                console.log('User not authenticated:', error.response.data);
             } else {
                 // Log other errors
                 setUserError('Błąd serwera. Spróbuj ponownie później.');
