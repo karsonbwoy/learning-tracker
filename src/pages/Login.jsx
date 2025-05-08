@@ -12,7 +12,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { user, login } = useAuth();
+    const { user, login, userLoading, userError } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,6 +43,7 @@ const Login = () => {
     return (
         <div className="max-w-md mx-auto mt-20 p-4 bg-white shadow rounded">
             <h1 className="text-2xl font-bold mb-4">Logowanie</h1>
+            {userError && <h3 className='text-red-500'>{userError}</h3>}
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <input
                     type="email"
@@ -64,9 +65,10 @@ const Login = () => {
                 <p>Nie masz konta? <Link to={"/register"} className='font-bold hover:text-blue-500'>Zarejestruj się!</Link></p>
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+                    className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
+                    disabled={userLoading}
                 >
-                    Zaloguj się
+                    {userLoading ? 'Ładowanie użytkownika' : 'Zaloguj się'}
                 </button>
             </form>
         </div>
