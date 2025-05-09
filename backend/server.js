@@ -27,3 +27,6 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 }).catch((err) => {
     console.error('Błąd połączenia z MongoDB:', err);
 });
+
+
+export default app;
