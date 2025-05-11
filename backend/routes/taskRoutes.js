@@ -5,7 +5,15 @@ import { getTasks, createTask, updateTask, deleteTask, deleteAllTasks } from '..
 
 const router = express.Router();
 
-router.use(verifyToken);
+if (process.env.NODE_ENV !== 'test') {
+    router.use(verifyToken);
+}
+else {
+    router.use((req, res, next) => {
+        req.user = { id: 'test-user-id' };
+        next();
+    });
+}
 
 router.get('/', getTasks);
 router.post('/', createTask);

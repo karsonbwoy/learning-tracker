@@ -1,8 +1,9 @@
 import Task from '../models/Task.js';
 
 export const getTasks = async (req, res) => {
-    const tasks = await Task.find({ user: req.user.id })
-    res.json(tasks)
+    console.log('getTasks ', req.user.id)
+    const tasks = await Task.find({ user: req.user.id }) //tu sie wywala
+    res.json(tasks) //to sie nie wykonuje
 }
 
 export const createTask = async (req, res) => {
