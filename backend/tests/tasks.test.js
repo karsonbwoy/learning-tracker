@@ -1,31 +1,28 @@
-import test, { after, before, beforeEach } from 'node:test';
+import test, { after, before } from 'node:test';
 import assert from 'node:assert/strict';
 import app from '../server.js';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
+import Task from '../models/Task.js';
 
 let mongoServer;
 
-before('Setup MongoDB', async () => {
+before(async () => {
     try {
         mongoServer = await MongoMemoryServer.create();
+        console.log('MongoMemoryServer started:'); // Log instance info
         const uri = mongoServer.getUri();
+        console.log('MongoDB URI:', uri); // Log the URI for debugging
         await mongoose.connect(uri);
+        console.log('MongoDB connection state after connect:', mongoose.connection.readyState); // Should log 1 (connected)
     } catch (err) {
         console.error('Error setting up MongoDB:', err);
         throw err;
     }
 });
 
-beforeEach(() => {
-    app.use((req, res, next) => {
-        req.user = { id: 'test-user-id' };
-        next();
-    });
-});
-
-after('Teardown MongoDB', async () => {
+after(async () => {
     try {
         await mongoose.disconnect();
         await mongoServer.stop();

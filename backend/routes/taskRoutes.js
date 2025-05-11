@@ -1,5 +1,6 @@
 import express from 'express';
 import { verifyToken } from '../middleware/auth.js';
+import mongoose from 'mongoose';
 
 import { getTasks, createTask, updateTask, deleteTask, deleteAllTasks } from '../controllers/taskController.js';
 
@@ -10,7 +11,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 else {
     router.use((req, res, next) => {
-        req.user = { id: 'test-user-id' };
+        req.user = { id: new mongoose.Types.ObjectId() };
         next();
     });
 }
