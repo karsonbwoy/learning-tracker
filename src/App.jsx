@@ -4,6 +4,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AuthProvider from './AuthContext'
+import UserPanel from './pages/UserPanel'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           </div>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/user" element={<UserPanel />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<Login />} />

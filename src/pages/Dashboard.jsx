@@ -8,6 +8,7 @@ import SuccessfullyRemovedAlert from '../components/SuccessfulyRemovedAlert';
 import LoadingComponent from '../components/LoadingComponent';
 import { useAuth } from '../AuthContext';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
     const { tasks, successRemoved, successAdded, handleAddTask, updateNotes, removeTask, changeStatus, clearTasks, isLoading } = useTasks();
@@ -29,6 +30,9 @@ const Dashboard = () => {
         <div>
             <div className="relative bg-blue-300 text-white p-4 text-center mb-10 ">
                 <h2 className="text-3xl font-bold">Dashboard</h2>
+                <Link to="/user" className="absolute top-4 left-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Panel użytkownika
+                </Link>
                 <button className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onClick={handleLogout}>
                     Logout
                 </button>
