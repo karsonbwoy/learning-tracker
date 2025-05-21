@@ -19,11 +19,16 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/tasks', taskRoutes);
 app.use('/auth', userRoutes)
-mongoose.connect(process.env.MONGO_URI).then(() => {
-    console.log('Połączono MongoDB');
-    app.listen(process.env.PORT, () => {
-        console.log(`Serwer działa na porcie ${process.env.PORT}`)
-    })
-}).catch((err) => {
-    console.error('Błąd połączenia z MongoDB:', err);
-});
+
+if (process.env.NODE_ENV !== 'test') {
+    mongoose.connect(process.env.MONGO_URI).then(() => {
+        console.log('Połączono MongoDB');
+        app.listen(process.env.PORT, () => {
+            console.log(`Serwer działa na porcie ${process.env.PORT}`)
+        })
+    }).catch((err) => {
+        console.error('Błąd połączenia z MongoDB:', err);
+    });
+}
+
+export default app;
