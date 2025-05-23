@@ -75,3 +75,38 @@ export const getUser = async (req, res) => {
         return res.status(500).json({ message: 'Błąd serwera' });
     }
 }
+
+export const updateUser = async (req, res) => {
+    const { name, email } = req.body;
+
+    try {
+        const user = await User.findByIdAndUpdate(req.user.id, { name, email }, { new: true }).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
+        }
+        return res.status(200).json(user);
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Błąd serwera' });
+    }
+}
+
+export const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
+        }
+        res.clearCookie('token', {
+            httpOnly: true,
+            sameSite: 'None',
+            secure: process.env.NODE_ENV === 'production'
+        });
+        return res.status(200).json({ message: 'Konto usunięte pomyślnie' });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Błąd serwera' });
+    }
+}
