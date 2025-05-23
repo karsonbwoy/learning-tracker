@@ -104,17 +104,29 @@ const UserPanel = () => {
                                 value={newUser.email}
                                 onChange={(e) => setNewUser({ ...user, email: e.target.value })}
                             />
-                            <button
-                                type="submit"
-                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                                Zapisz zmiany
-                            </button>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    type="submit"
+                                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                                    Zapisz zmiany
+                                </button>
+                                <button
+                                    onClick={() => setIsEditing(false)}
+                                    className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">
+                                    Anuluj
+                                </button>
+                            </div>
                         </form>
                     </div>
                 )
                 : (<div className="mb-6">
-                    <p><span className="font-semibold">Imię:</span> {user.name}</p>
-                    <p><span className="font-semibold">Email:</span> {user.email}</p>
+                    <h3 className="text-xl font-semibold mb-2 text-blue-600">Dane</h3>
+                    <p className="text-base py-2 px-3 mb-2">
+                        <span className="font-semibold">Imię:</span> {user.name}
+                    </p>
+                    <p className="text-base py-2 px-3 ">
+                        <span className="font-semibold">Email:</span> {user.email}
+                    </p>
                     <button
                         onClick={() => handleEditing()}
                         className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-2">
