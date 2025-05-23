@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import useTasks from "../hooks/useTasks";
 
 
 const API = import.meta.env.VITE_API_URL
@@ -11,6 +12,8 @@ const UserPanel = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState(null);
     const navigate = useNavigate();
+    const { countTasks } = useTasks();
+    const stats = countTasks();
     const { user, userLoading, logout, deleteUser, updateUser } = useAuth();
     const [newUser, setNewUser] = useState(null);
 
@@ -138,10 +141,10 @@ const UserPanel = () => {
             <div className="mb-6">
                 <h3 className="text-xl font-semibold mb-2 text-blue-600">Statystyki zadań</h3>
                 <ul className="list-disc list-inside">
-                    <li><strong>Łącznie:</strong> {2}</li>
-                    <li><strong>Do zrobienia:</strong> {3}</li>
-                    <li><strong>W trakcie:</strong> {4}</li>
-                    <li><strong>Zrobione:</strong> {5}</li>
+                    <li><strong>Łącznie:</strong> {stats.total}</li>
+                    <li><strong>Do zrobienia:</strong> {stats.notStarted}</li>
+                    <li><strong>W trakcie:</strong> {stats.inProgress}</li>
+                    <li><strong>Zrobione:</strong> {stats.completed}</li>
                 </ul>
             </div>
 
