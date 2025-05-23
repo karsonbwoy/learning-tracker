@@ -121,10 +121,10 @@ const UserPanel = () => {
                 )
                 : (<div className="mb-6">
                     <h3 className="text-xl font-semibold mb-2 text-blue-600">Dane</h3>
-                    <p className="text-base py-2 px-3 mb-2">
+                    <p className="text-base py-2 mb-2">
                         <span className="font-semibold">Imię:</span> {user.name}
                     </p>
-                    <p className="text-base py-2 px-3 ">
+                    <p className="text-base py-2  ">
                         <span className="font-semibold">Email:</span> {user.email}
                     </p>
                     <button
