@@ -8,11 +8,11 @@ const API = import.meta.env.VITE_API_URL
 const UserPanel = () => {
     const [showConfirm, setShowConfirm] = useState(false);
     const navigate = useNavigate();
-    const { user, userLoading, logout } = useAuth();
+    const { user, userLoading, logout, deleteUser } = useAuth();
 
     const handleDelete = async () => {
         try {
-            //delete from useAuth
+            deleteUser();
             navigate("/login");
         } catch (err) {
             console.error(err);

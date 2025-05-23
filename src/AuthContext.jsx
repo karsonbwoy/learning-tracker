@@ -8,6 +8,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [userLoading, setUserLoading] = useState(true);
     const [userError, setUserError] = useState(null);
+    const [message, setMessage] = useState(null);
 
     const checkUser = async () => {
         const timeoutId = setTimeout(() => {
@@ -51,12 +52,27 @@ const AuthProvider = ({ children }) => {
             });
     };
 
+    const deleteUser = () => {
+        axios.post(`${API}/auth/deleteuser`, {}, { withCredentials: true })
+            .then((data) => {
+                setUser(null);
+                setMessage(data.data.message);
+                setTimeout(() => {
+                    setMessage(null);
+                }, 5000);
+
+            })
+            .catch((error) => {
+                console.error('Delete user failed:', error);
+            });
+    }
+
     useEffect(() => {
         checkUser();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, checkUser, userLoading, userError }}>
+        <AuthContext.Provider value={{ user, message, login, logout, deleteUser, checkUser, userLoading, userError }}>
             {children}
         </AuthContext.Provider>
     );
