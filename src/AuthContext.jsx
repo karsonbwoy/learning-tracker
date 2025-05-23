@@ -42,6 +42,16 @@ const AuthProvider = ({ children }) => {
         checkUser();
     };
 
+    const updateUser = (newUser) => {
+        axios.post(`${API}/auth/updateuser`, newUser, { withCredentials: true })
+            .then((response) => {
+                setUser(response.data);
+            })
+            .catch((error) => {
+                console.error('Update user failed:', error);
+            });
+    }
+
     const logout = () => {
         axios.post(`${API}/auth/logout`, {}, { withCredentials: true })
             .then(() => {
@@ -72,7 +82,7 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, message, login, logout, deleteUser, checkUser, userLoading, userError }}>
+        <AuthContext.Provider value={{ user, message, login, logout, deleteUser, updateUser, checkUser, userLoading, userError }}>
             {children}
         </AuthContext.Provider>
     );
