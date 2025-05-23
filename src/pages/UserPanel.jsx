@@ -36,7 +36,7 @@ const UserPanel = () => {
             return;
         }
         try {
-            updateUser(newUser);
+            await updateUser(newUser);
             setError('');
             setIsEditing(false);
             setNewUser(null);
@@ -44,8 +44,11 @@ const UserPanel = () => {
             setTimeout(() => {
                 setMessage(null);
             }, 5000);
-        } catch (err) {
-            console.log(err.response.status); // Clear error message after 5 seconds
+        } catch {
+            setError("Nie udało się zmienić danych.");
+            setTimeout(() => {
+                setError(null);
+            }, 5000);
         }
     };
 

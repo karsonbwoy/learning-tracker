@@ -80,7 +80,7 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     const { name, email } = req.body;
     try {
-        const user = await User.findByIdAndUpdate(req.user.id, { name, email }, { new: true }).select('-password');
+        const user = await User.findByIdAndUpdate(req.user.id, { name, email }, { new: true, runValidators: true }).select('-password');
         if (!user) {
             return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
         }
@@ -88,7 +88,10 @@ export const updateUser = async (req, res) => {
     }
     catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Błąd serwera' });
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: 'Niepoprawne dane' });
+        }
+        return res.status(500).json({ message: 'Błąd serwera lub błędne dane' });
     }
 }
 

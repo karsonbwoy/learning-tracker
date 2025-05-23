@@ -43,12 +43,13 @@ const AuthProvider = ({ children }) => {
     };
 
     const updateUser = (newUser) => {
-        axios.post(`${API}/auth/updateuser`, newUser, { withCredentials: true })
+        return axios.post(`${API}/auth/updateuser`, newUser, { withCredentials: true })
             .then((response) => {
                 setUser(response.data);
+                return response.data;
             })
             .catch((error) => {
-                console.error('Update user failed:', error);
+                throw error;
             });
     }
 
