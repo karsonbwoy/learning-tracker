@@ -95,16 +95,16 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try {
-        // const user = await User.findByIdAndDelete(req.user.id);
-        // await Task.deleteMany({ user: req.user.id })
-        // if (!user) {
-        //     return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
-        // }
-        // res.clearCookie('token', {
-        //     httpOnly: true,
-        //     sameSite: 'None',
-        //     secure: process.env.NODE_ENV === 'production'
-        // });
+        const user = await User.findByIdAndDelete(req.user.id);
+        await Task.deleteMany({ user: req.user.id })
+        if (!user) {
+            return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
+        }
+        res.clearCookie('token', {
+            httpOnly: true,
+            sameSite: 'None',
+            secure: process.env.NODE_ENV === 'production'
+        });
         return res.status(200).json({ message: 'Konto usunięte pomyślnie' });
     }
     catch (error) {
