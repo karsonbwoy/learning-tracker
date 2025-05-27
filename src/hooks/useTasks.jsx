@@ -50,7 +50,7 @@ export default function useTasks() {
 
     const handleAddTask = async (task) => {
         try {
-            const res = await axios.post(`${API}/tasks`, task, { withCredentials: true });
+            const res = await axios.post(`${API}/tasks`, { ...task, order: tasks?.length }, { withCredentials: true });
             await fetchTasks();
             setSuccessAdded(res.data.title);
             setTimeout(() => {

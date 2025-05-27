@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
+    order: {
+        type: Number,
+        required: [true, "Kolejność jest wymagana"],
+        default: 0,
+    },
     title: {
         type: String,
         required: [true, "Tytuł jest wymagany"],

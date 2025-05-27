@@ -1,7 +1,7 @@
 import Task from '../models/Task.js';
 
 export const getTasks = async (req, res) => {
-    const tasks = await Task.find({ user: req.user.id })
+    const tasks = await Task.find({ user: req.user.id }).sort({ order: 1 })
     res.json(tasks)
 }
 
@@ -24,4 +24,17 @@ export const updateTask = async (req, res) => {
 export const deleteAllTasks = async (req, res) => {
     await Task.deleteMany({ user: req.user.id })
     res.status(200).json({ message: 'All tasks deleted succesfully' })
+}
+
+export const reorderTasks = async (req, res) => {
+    const { tasks } = req.body;
+    const bulkOps = tasks.map((task, index) => ({
+        updateOne: {
+            filter: { _id: task._id, user: req.user.id },
+            update: { order: index }
+        }
+    }));
+
+    await Task.bulkWrite(bulkOps);
+    res.status(200).json({ message: 'Tasks reordered successfully' });
 }
