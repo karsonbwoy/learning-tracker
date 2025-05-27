@@ -12,7 +12,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { user, login, userLoading, userError } = useAuth();
+    const { user, login, userLoading, userError, message } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,8 +40,11 @@ const Login = () => {
             navigate('/dashboard');
         }
     }, [user, navigate]);
-    return (
-        <div className="max-w-md mx-auto mt-20 p-4 bg-white shadow rounded">
+    return (<div className='max-w-md mt-20  mx-auto'>
+        {message && <div className="my-2 p-2 rounded-md bg-red-100 text-red-800 border border-red-200">
+            <strong>{message}</strong>
+        </div>}
+        <div className="p-4 bg-white shadow rounded">
             <h1 className="text-2xl font-bold mb-4">Logowanie</h1>
             {userError && <h3 className='text-red-500'>{userError}</h3>}
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -72,6 +75,7 @@ const Login = () => {
                 </button>
             </form>
         </div>
+    </div>
     );
 };
 

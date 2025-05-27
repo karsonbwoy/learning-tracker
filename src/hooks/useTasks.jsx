@@ -37,6 +37,16 @@ export default function useTasks() {
         })
     }, [checkUser]);
 
+    const countTasks = () => {
+        let stats = {
+            total: tasks.length,
+            completed: tasks.filter(task => task.status === 'Ukończone').length,
+            inProgress: tasks.filter(task => task.status === 'W trakcie').length,
+            notStarted: tasks.filter(task => task.status === 'Do zrobienia').length,
+        }
+        return stats;
+    }
+
 
     const handleAddTask = async (task) => {
         try {
@@ -121,5 +131,6 @@ export default function useTasks() {
         changeStatus,
         clearTasks,
         isLoading,
+        countTasks
     }
 }
